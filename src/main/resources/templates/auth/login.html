@@ -15,7 +15,7 @@
                        <a th:href="@{/login}">Login</a>
                    </li>
                    <li>
-                       <a href="#">Sign up</a>
+                       <a th:href="@{/signup}">Sign up</a>
                    </li>
                </ul>               
              </nav>
@@ -27,6 +27,9 @@
             <div th:if="${param.loggedOut}">
                 <p>You have been logged out.</p>
             </div>            
+            <div th:if="${successMessage}">
+                <p th:text="${successMessage}"></p>
+            </div>                             
             <div th:if="${param.error}">
                 <p>The email address or password is incorrect.</p>
             </div>
@@ -44,7 +47,7 @@
                 </div>
             </form>
 
-            <a href="#">Sign Up</a>
+            <a th:href="@{/signup}">Sign Up</a>
         </main>
 
         <footer>

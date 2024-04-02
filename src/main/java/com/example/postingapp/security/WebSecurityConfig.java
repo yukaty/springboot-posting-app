@@ -13,13 +13,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig {
-    // SecurityFilterChain is a filter chain that is responsible for all security processing
+    // SecurityFilterChain is responsible for all security processing
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/css/**").permitAll()  // Allowed URLs to access without login
-                .anyRequest().authenticated()  // Other URLs require login
+                .requestMatchers("/css/**","/signup/**").permitAll()  // Allowed URLs to access without login
+                .anyRequest().authenticated()            // Other URLs require login
             )
             .formLogin((form) -> form
                 .loginPage("/login")              // Login form URL
