@@ -32,7 +32,7 @@ public class UserService {
         user.setEmail(signupForm.getEmail());
         user.setPassword(passwordEncoder.encode(signupForm.getPassword()));
         user.setRole(role);
-        user.setEnabled(true);
+        user.setEnabled(false); // default: disabled
 
         return userRepository.save(user);
     }
@@ -47,5 +47,13 @@ public class UserService {
     public boolean isSamePassword(String password, String passwordConfirmation) {
         return password.equals(passwordConfirmation);
     }
+    
+    // Enable user
+    @Transactional
+    public void enableUser(User user) {
+        user.setEnabled(true);
+        userRepository.save(user);
+    }    
+
 }
 

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Email verification</title>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <a th:href="@{/}">Posting App</a>
+               
+               <ul>
+                   <li>
+                       <a th:href="@{/login}">Login</a>
+                   </li>
+                   <li>
+                       <a th:href="@{/signup}">Sign up</a>
+                   </li>
+               </ul>               
+             </nav>
+        </header>
+
+        <main>
+            <div th:if="${successMessage}">
+                <p th:text="${successMessage}"></p>
+            </div>
+
+            <div th:if="${errorMessage}">
+                <p th:text="${errorMessage}"></p>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; Posting App</p>
+        </footer>
+    </body>
+</html>
+
