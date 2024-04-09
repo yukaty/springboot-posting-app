@@ -1,68 +1,68 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <th:block th:replace="~{fragments :: common-head}"></th:block>
     <title>Post List</title>
 </head>
 
 <body>
-    <header>
-        <nav>
-            <a th:href="@{/}">Posting App</a>
+    <!-- WRAPPER -->
+    <div class="wrapper">
+        <th:block th:replace="~{fragments :: header}"></th:block>
+        <main>
+            <div class="container">
+                <h1 class="fs-2 my-3">Posts</h1>
 
-            <ul>
-                <li>
-                    <a th:href="@{/logout}"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        Logout
-                    </a>
-                    <form id="logout-form" th:action="@{/logout}" method="post"></form>
-                </li>
-            </ul>
-        </nav>
-    </header>
+                <div th:if="${param.loggedIn}">
+                    <p class="text-success">You are logged in.</p>
+                </div>
 
-    <main>
-        <h1>Post List</h1>
+                <div th:if="${successMessage}">
+                    <p class="text-success" th:text="${successMessage}"></p>
+                </div>
 
-        <div th:if="${param.loggedIn}">
-            <p>You are logged in.</p>
-        </div>
+                <div th:if="${errorMessage}">
+                    <p class="text-danger" th:text="${errorMessage}"></p>
+                </div>
 
-        <div th:if="${successMessage}">
-            <p th:text="${successMessage}"></p>
-        </div>
+                <div class="mb-2">
+                    <a th:href="@{/posts/create}" class="text-decoration-none">Create Post</a>
+                </div>
 
-        <div th:if="${errorMessage}">
-            <p th:text="${errorMessage}"></p>
-        </div>
+                <div th:unless="${#lists.isEmpty(posts)}">
+                    <article th:each="post : ${posts}">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h2 class="card-title fs-5" th:text="${post.title}"></h2>
+                                <p class="card-text" th:text="${post.content}"></p>
 
-        <a th:href="@{/posts/create}">Create Post</a>
+                                <div class="d-flex">
+                                    <a th:href="@{/posts/__${post.id}__}"
+                                        class="btn btn-outline-primary d-block me-1">Details</a>
+                                    <a th:href="@{/posts/__${post.id}__/edit}"
+                                        class="btn btn-outline-primary d-block me-1">Edit</a>
 
-        <!-- if posts is not empty -->
-        <div th:unless="${#lists.isEmpty(posts)}">
-            <article th:each="post : ${posts}">
-                <h2 th:text="${post.title}"></h2>
-                <p th:text="${post.content}"></p>
-                <a th:href="@{/posts/__${post.id}__}">Details</a>
-                <a th:href="@{/posts/__${post.id}__/edit}">Edit</a>
-                <form th:action="@{/posts/__${post.id}__/delete}" method="post"
-                    onsubmit="return confirm('Are you sure you want to delete this post?');">
-                    <button type="submit">Delete</button>
-                </form>
-            </article>
-        </div>
-        <!-- if posts is empty -->
-        <div th:if="${#lists.isEmpty(posts)}">
-            <p>No posts found.</p>
-        </div>
-    </main>
+                                    <form th:action="@{/posts/__${post.id}__/delete}" method="post"
+                                        onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                        <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div th:if="${#lists.isEmpty(posts)}">
+                    <p>No posts found.</p>
+                </div>
+            </div>
+        </main>
 
-    <footer>
-        <p>&copy; Posting App</p>
-    </footer>
+        <th:block th:replace="~{fragments :: footer}"></th:block>
+    </div>
+    <!-- END WRAPPER -->
+
+    <th:block th:replace="~{fragments :: scripts}"></th:block>
 </body>
 
 </html>

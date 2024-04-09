@@ -1,58 +1,63 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Login</title>
-    </head>
-    <body>
-        <header>
-            <nav>
-                <a th:href="@{/}">Posting App</a>
-               
-               <ul>
-                   <li>
-                       <a th:href="@{/login}">Login</a>
-                   </li>
-                   <li>
-                       <a th:href="@{/signup}">Sign up</a>
-                   </li>
-               </ul>               
-             </nav>
-        </header>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <th:block th:replace="~{fragments :: common-head}"></th:block>
+    <title>Login</title>
+</head>
+
+<body>
+    <!-- WRAPPER -->
+    <div class="wrapper">
+        <th:block th:replace="~{fragments :: header}"></th:block>
 
         <main>
-            <h1>Login</h1>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-3 col-lg-4 col-md-5 col-sm-7">
+                        <h1 class="fs-2 my-3 text-center">Login</h1>
 
-            <div th:if="${param.loggedOut}">
-                <p>You have been logged out.</p>
-            </div>            
-            <div th:if="${successMessage}">
-                <p th:text="${successMessage}"></p>
-            </div>                             
-            <div th:if="${param.error}">
-                <p>The email address or password is incorrect.</p>
+                        <div th:if="${param.loggedOut}">
+                            <p class="text-success">You have been logged out.</p>
+                        </div>
+
+                        <div th:if="${successMessage}">
+                            <p class="text-success" th:text="${successMessage}"></p>
+                        </div>
+
+                        <div th:if="${param.error}">
+                            <p class="text-danger">The email address or password is incorrect.</p>
+                        </div>
+
+                        <form th:action="@{/login}" method="post">
+
+                            <div class="form-group mb-3">
+                                <input type="text" class="form-control" name="username" autocomplete="email"
+                                    placeholder="Email" autofocus>
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="password" class="form-control" name="password" autocomplete="new-password"
+                                    placeholder="Password">
+                            </div>
+
+                            <div class="d-flex justify-content-center mb-3">
+                                <button type="submit" class="btn btn-primary w-100">Login</button>
+                            </div>
+                        </form>
+
+                        <div class="text-center">
+                            <a th:href="@{/signup}" class="text-decoration-none">Sign Up</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <form th:action="@{/login}" method="post">
-                <div>
-                    <input type="text" name="username" autocomplete="email" placeholder="Email" autofocus>
-                </div>
-                <div>
-                    <input type="password" name="password" autocomplete="new-password" placeholder="Password">
-                </div>
-
-                <div>
-                    <button type="submit">Login</button>
-                </div>
-            </form>
-
-            <a th:href="@{/signup}">Sign Up</a>
         </main>
 
-        <footer>
-            <p>&copy; Posting App</p>
-        </footer>
-    </body>
-</html>
+        <th:block th:replace="~{fragments :: footer}"></th:block>
+    </div>
+    <!-- END WRAPPER -->
 
+    <th:block th:replace="~{fragments :: scripts}"></th:block>
+</body>
+
+</html>

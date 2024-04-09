@@ -1,53 +1,51 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Create Post</title>
-    </head>
-    <body>
-        <header>
-            <nav>
-                <a th:href="@{/}">Posting App</a>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-                <ul>
-                    <li>
-                        <a th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            Logout
-                        </a>
-                        <form id="logout-form" th:action="@{/logout}" method="post"></form>
-                    </li>
-                </ul>
-            </nav>
-        </header>
+<head>
+    <th:block th:replace="~{fragments :: common-head}"></th:block>
+    <title>Create Post</title>
+</head>
+
+<body>
+    <!-- WRAPPER -->
+    <div class="wrapper">
+        <th:block th:replace="~{fragments :: header}"></th:block>
 
         <main>
-            <h1>Create Post</h1>
+            <div class="container">
+                <h1 class="fs-2 my-3">Create Post</h1>
 
-            <a th:href="@{/posts}">&lt; Back</a>
-
-            <form th:action="@{/posts/create}" method="post" th:object="${postCreateForm}">
-                <div>
-                    <label for="title">Title</label>
-                    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
-                    <input type="text" th:field="*{title}">
+                <div class="mb-2">
+                    <a th:href="@{/posts}" class="text-decoration-none">&lt; Back</a>
                 </div>
 
-                <div>
-                    <label for="content">Content</label>
-                    <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
-                    <textarea th:field="*{content}"></textarea>
-                </div>
+                <form th:action="@{/posts/create}" method="post" th:object="${postCreateForm}">
+                    <div class="form-group mb-3">
+                        <label for="title">Title</label>
+                        <div th:if="${#fields.hasErrors('title')}" class="text-danger small mb-2" th:errors="*{title}">
+                        </div>
+                        <input type="text" class="form-control" th:field="*{title}">
+                    </div>
 
-                <div>
-                   <button type="submit">Post</button>
-                </div>
-            </form>
+                    <div class="form-group mb-3">
+                        <label for="content">Content</label>
+                        <div th:if="${#fields.hasErrors('content')}" class="text-danger small mb-2"
+                            th:errors="*{content}"></div>
+                        <textarea class="form-control" th:field="*{content}"></textarea>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="btn btn-outline-primary">Post</button>
+                    </div>
+                </form>
+            </div>
         </main>
 
-        <footer>
-            <p>&copy; Posting App</p>
-        </footer>
-    </body>
-</html>
+        <th:block th:replace="~{fragments :: footer}"></th:block>
+    </div>
+    <!-- END WRAPPER -->
 
+    <th:block th:replace="~{fragments :: scripts}"></th:block>
+</body>
+
+</html>
