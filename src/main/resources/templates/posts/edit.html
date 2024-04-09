@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Edit Post</title>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <a th:href="@{/}">Posting App</a>
+
+                <ul>
+                    <li>
+                        <a th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
+                        <form id="logout-form" th:action="@{/logout}" method="post"></form>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <h1>Edit Post</h1>
+
+            <a th:href="@{/posts}">&lt; Back</a>
+
+            <form th:action="@{/posts/__${post.id}__}" method="post" th:object="${editPostForm}">
+                <div>
+                    <label for="title">Title</label>
+                    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                    <input type="text" th:field="*{title}">
+                </div>
+
+                <div>
+                    <label for="content">Content</label>
+                    <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
+                    <textarea th:field="*{content}"></textarea>
+                </div>
+
+                <div>
+                   <button type="submit">Update</button>
+                </div>
+            </form>
+        </main>
+
+        <footer>
+            <p>&copy; Posting App</p>
+        </footer>
+    </body>
+</html>
+
