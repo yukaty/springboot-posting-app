@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.postingapp.entity.Post;
@@ -28,25 +29,36 @@ public class PostController {
     private final PostService postService;
 
     public PostController(PostService postService) {
-        
+
         this.postService = postService;
     }
 
     @GetMapping
-    public String index(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, Model model) {
-        
+    public String index(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+            @RequestParam(required = false) String sort, Model model) 
+    {
+
         User user = userDetailsImpl.getUser();
-        List<Post> posts = postService.findPostsByUserOrderedByCreatedAtDesc(user);
+        List<Post> posts;
+
+        // Determine the sort order
+        if ("createdAtAsc".equals(sort)) {
+            posts = postService.findPostsByUserOrderedByCreatedAtAsc(user);
+        } else {
+            // Default to descending order
+            posts = postService.findPostsByUserOrderedByCreatedAtDesc(user);
+        }
 
         // Pass the posts to the view
         model.addAttribute("posts", posts);
+        model.addAttribute("currentSort", sort);
 
         return "posts/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model) {
-        
+
         Optional<Post> optionalPost = postService.findPostById(id);
 
         if (optionalPost.isEmpty()) {
@@ -64,7 +76,7 @@ public class PostController {
 
     @GetMapping("/create")
     public String showCreatePostForm(Model model) {
-        
+
         model.addAttribute("postCreateForm", new CreatePostForm());
 
         return "posts/create";
@@ -75,9 +87,8 @@ public class PostController {
             BindingResult bindingResult,
             @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
             RedirectAttributes redirectAttributes,
-            Model model)
-    {
-        
+            Model model) {
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("postCreateForm", postCreateForm);
 
@@ -93,9 +104,9 @@ public class PostController {
 
     @GetMapping("/{id}/edit")
     public String showEditPostForm(@PathVariable(name = "id") Integer id,
-                               @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-                               RedirectAttributes redirectAttributes,
-                               Model model) {
+            @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+            RedirectAttributes redirectAttributes,
+            Model model) {
         Optional<Post> optionalPost = postService.findPostById(id);
         User user = userDetailsImpl.getUser();
 
@@ -111,14 +122,14 @@ public class PostController {
 
         return "posts/edit";
     }
-    
+
     @PostMapping("/{id}")
     public String updatePost(@ModelAttribute @Validated EditPostForm editPostForm,
-                             BindingResult bindingResult,
-                             @PathVariable(name = "id") Integer id,
-                             @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-                             RedirectAttributes redirectAttributes,
-                             Model model) {
+            BindingResult bindingResult,
+            @PathVariable(name = "id") Integer id,
+            @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+            RedirectAttributes redirectAttributes,
+            Model model) {
         Optional<Post> optionalPost = postService.findPostById(id);
         User user = userDetailsImpl.getUser();
 
@@ -140,13 +151,13 @@ public class PostController {
         redirectAttributes.addFlashAttribute("successMessage", "The post has been updated.");
 
         return "redirect:/posts/" + id;
-    }        
+    }
 
     @PostMapping("/{id}/delete")
     public String deletePost(@PathVariable(name = "id") Integer id,
-                             @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-                             RedirectAttributes redirectAttributes,
-                             Model model) {
+            @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+            RedirectAttributes redirectAttributes,
+            Model model) {
         Optional<Post> optionalPost = postService.findPostById(id);
         User user = userDetailsImpl.getUser();
 

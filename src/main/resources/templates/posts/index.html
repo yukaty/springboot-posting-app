@@ -12,8 +12,9 @@
         <th:block th:replace="~{fragments :: header}"></th:block>
         <main>
             <div class="container">
-                <h1 class="fs-2 my-3">Posts</h1>
+                <h1 class="fs-3 my-3">Posts</h1>
 
+                <!-- Flash Messages -->
                 <div th:if="${param.loggedIn}">
                     <p class="text-success">You are logged in.</p>
                 </div>
@@ -27,38 +28,68 @@
                 </div>
 
                 <div class="mb-2">
-                    <a th:href="@{/posts/create}" class="text-decoration-none">Create Post</a>
+                    <a th:href="@{/posts/create}" class="btn btn-primary text-decoration-none">
+                        <i class="fas fa-plus me-1"></i> Create Post
+                    </a>
                 </div>
 
+                <!-- List -->
                 <div th:unless="${#lists.isEmpty(posts)}">
+
+                    <!-- Sort Buttons -->
+                    <div class="mb-2 text-end">
+                        <a href="?sort=createdAtDesc" class="btn btn-outline-primary">
+                            <i class="fas fa-sort-amount-down"></i> Newest First
+                        </a>
+                        <a href="?sort=createdAtAsc" class="btn btn-outline-primary">
+                            <i class="fas fa-sort-amount-up"></i> Oldest First
+                        </a>
+                    </div>
+                    <!-- Posts -->
                     <article th:each="post : ${posts}">
                         <div class="card mb-3">
                             <div class="card-body">
-                                <h2 class="card-title fs-5" th:text="${post.title}"></h2>
+                                <!-- Title and Date -->
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h2 class="card-title fs-5" th:text="${post.title}"></h2>
+                                    </div>
+                                    <div>
+                                        <p class="card-text"
+                                            th:text="${#dates.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}"></p>
+                                    </div>
+                                </div>
+                                <!-- Content -->
                                 <p class="card-text" th:text="${post.content}"></p>
-
-                                <div class="d-flex">
-                                    <a th:href="@{/posts/__${post.id}__}"
-                                        class="btn btn-outline-primary d-block me-1">Details</a>
-                                    <a th:href="@{/posts/__${post.id}__/edit}"
-                                        class="btn btn-outline-primary d-block me-1">Edit</a>
-
-                                    <form th:action="@{/posts/__${post.id}__/delete}" method="post"
-                                        onsubmit="return confirm('Are you sure you want to delete this post?');">
-                                        <button type="submit" class="btn btn-outline-danger">Delete</button>
-                                    </form>
+                                <!-- Edit Buttons -->
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <a th:href="@{/posts/__${post.id}__}"
+                                            class="btn btn-outline-primary me-1">Details</a>
+                                        <a th:href="@{/posts/__${post.id}__/edit}"
+                                            class="btn btn-outline-primary">Edit</a>
+                                    </div>
+                                    <div>
+                                        <form th:action="@{/posts/__${post.id}__/delete}" method="post"
+                                            onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                            <button type="submit" class="btn btn-outline-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </article>
                 </div>
-                <div th:if="${#lists.isEmpty(posts)}">
-                    <p>No posts found.</p>
-                </div>
+                </article>
             </div>
-        </main>
+            <div th:if="${#lists.isEmpty(posts)}">
+                <p>No posts found.</p>
+            </div>
+    </div>
+    </main>
 
-        <th:block th:replace="~{fragments :: footer}"></th:block>
+    <th:block th:replace="~{fragments :: footer}"></th:block>
     </div>
     <!-- END WRAPPER -->
 

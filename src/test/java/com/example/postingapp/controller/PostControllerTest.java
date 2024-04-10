@@ -42,7 +42,7 @@ public class PostControllerTest {
     public void redirectToLoginPageIfNotLoggedIn() throws Exception {
         mockMvc.perform(get("/posts"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("http://localhost/login"));
+                .andExpect(redirectedUrl("http://localhost/login")); // redirect by Spring Security
     }
 
     @Test
@@ -57,7 +57,7 @@ public class PostControllerTest {
     public void redirectFromPostDetailsPageToLoginPageIfNotLoggedIn() throws Exception {
         mockMvc.perform(get("/posts/1"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("http://localhost/login"));
+                .andExpect(redirectedUrl("http://localhost/login")); // redirect by Spring Security
     }
 
     @Test
@@ -72,7 +72,7 @@ public class PostControllerTest {
     public void redirectFromCreatePostPageToLoginPageIfNotLoggedIn() throws Exception {
         mockMvc.perform(get("/posts/create"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("http://localhost/login"));
+                .andExpect(redirectedUrl("http://localhost/login")); // redirect by Spring Security
     }
 
     @Test
@@ -82,7 +82,7 @@ public class PostControllerTest {
         mockMvc.perform(post("/posts/create").with(csrf()).param("title", "Post Test").param("content",
                 "Finished the Java course!"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/posts"));
+                .andExpect(redirectedUrl("/posts")); // redirect by Spring MVC
 
         Post post = postService.findFirstPostByOrderByIdDesc();
         assertThat(post.getTitle()).isEqualTo("Post Test");
@@ -95,7 +95,7 @@ public class PostControllerTest {
         mockMvc.perform(post("/posts/create").with(csrf()).param("title", "Post Test").param("content",
                 "Finished the Java course!"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("http://localhost/login"));
+                .andExpect(redirectedUrl("http://localhost/login")); // redirect by Spring Security
 
         Post post = postService.findFirstPostByOrderByIdDesc();
         assertThat(post.getTitle()).isNotEqualTo("Post Test");
@@ -115,14 +115,14 @@ public class PostControllerTest {
     public void loggedInUserIsRedirectedFromOthersPostEditPageToListPage() throws Exception {
         mockMvc.perform(get("/posts/1/edit"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/posts"));
+                .andExpect(redirectedUrl("/posts")); // redirect by Spring MVC
     }
 
     @Test
     public void notLoggedInUserIsRedirectedToLoginPageWhenAccessingPostEditPage() throws Exception {
         mockMvc.perform(get("/posts/1/edit"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("http://localhost/login"));
+                .andExpect(redirectedUrl("http://localhost/login")); // redirect by Spring Security
     }
 
     @Test
@@ -131,7 +131,7 @@ public class PostControllerTest {
     public void loggedInUserIsRedirectedToPostDetailPageAfterPostUpdate() throws Exception {
         mockMvc.perform(post("/posts/1").with(csrf()).param("title", "Test Title").param("content", "Test Content"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/posts/1"));
+                .andExpect(redirectedUrl("/posts/1")); // redirect by Spring MVC
 
         Optional<Post> optionalPost = postService.findPostById(1);
         assertThat(optionalPost).isPresent();
@@ -146,7 +146,7 @@ public class PostControllerTest {
     public void loggedInUserIsRedirectedToListPageWithoutUpdatingOthersPost() throws Exception {
         mockMvc.perform(post("/posts/1").with(csrf()).param("title", "Test Title").param("content", "Test Content"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/posts"));
+                .andExpect(redirectedUrl("/posts")); // redirect by Spring MVC
 
         Optional<Post> optionalPost = postService.findPostById(1);
         assertThat(optionalPost).isPresent();
@@ -160,7 +160,7 @@ public class PostControllerTest {
     public void notLoggedInUserIsRedirectedToLoginPageWithoutUpdatingPost() throws Exception {
         mockMvc.perform(post("/posts/1").with(csrf()).param("title", "Test Title").param("content", "Test Content"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("http://localhost/login"));
+                .andExpect(redirectedUrl("http://localhost/login")); // redirect by Spring Security
 
         Optional<Post> optionalPost = postService.findPostById(1);
         assertThat(optionalPost).isPresent();
@@ -189,7 +189,7 @@ public class PostControllerTest {
         mockMvc.perform(post("/posts/1/delete").with(csrf()))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/posts"));
+                .andExpect(redirectedUrl("/posts")); // redirect by Spring MVC
 
         Optional<Post> optionalPost = postService.findPostById(1);
         assertThat(optionalPost).isPresent();
@@ -200,7 +200,7 @@ public class PostControllerTest {
     public void notLoggedInUserIsRedirectedToLoginPageWithoutDeletingPost() throws Exception {
         mockMvc.perform(post("/posts/1/delete").with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("http://localhost/login"));
+                .andExpect(redirectedUrl("http://localhost/login")); // redirect by Spring Security
 
         Optional<Post> optionalPost = postService.findPostById(1);
         assertThat(optionalPost).isPresent();

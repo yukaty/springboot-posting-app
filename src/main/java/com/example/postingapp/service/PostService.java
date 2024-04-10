@@ -20,11 +20,16 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    // Get a list of posts associated with a specific user in order of creation date
+    // Get a list of posts with a specific user in order of newest to oldest
     public List<Post> findPostsByUserOrderedByCreatedAtDesc(User user) {
         return postRepository.findByUserOrderByCreatedAtDesc(user);
     }
-
+    
+    // Get a list of posts with a specific user in order of oldest to newest
+    public List<Post> findPostsByUserOrderedByCreatedAtAsc(User user) {
+        return postRepository.findByUserOrderByCreatedAtAsc(user);
+    }
+    
     // Get a post by id
     public Optional<Post> findPostById(Integer id) {
         return postRepository.findById(id);

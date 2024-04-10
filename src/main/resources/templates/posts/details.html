@@ -15,6 +15,7 @@
             <div class="container">
                 <h1 class="fs-2 my-3">Post Details</h1>
 
+                <!-- Flash Messages -->
                 <div th:if="${successMessage}">
                     <p class="text-success" th:text="${successMessage}"></p>
                 </div>
@@ -23,12 +24,15 @@
                     <a th:href="@{/posts}" class="text-decoration-none">&lt; Back</a>
                 </div>
 
+                <!-- Post Details -->
                 <article>
                     <div class="card mb-3">
                         <div class="card-body">
                             <h2 class="card-title fs-5" th:text="${post.title}"></h2>
                             <p class="card-text" th:text="${post.content}"></p>
+                            <p class="card-text" th:text="${post.updatedAt}"></p>
 
+                            <!-- Buttons -->
                             <div th:if="${#authentication.principal.user.id == post.user.id}" class="d-flex">
                                 <a th:href="@{/posts/__${post.id}__/edit}"
                                     class="btn btn-outline-primary d-block me-1">Edit</a>
