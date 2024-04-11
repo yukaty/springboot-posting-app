@@ -5,6 +5,7 @@ INSERT IGNORE INTO roles (id, name) VALUES (1, 'ROLE_GENERAL');
 INSERT IGNORE INTO users (id, name, email, password, role_id, enabled) VALUES (1, 'John Doe', 'johnd@example.com', '$2a$10$2JNjTwZBwo7fprL2X4sv.OEKqxnVtsVQvuXDkI8xVGix.U3W5B7CO', 1, true);
 INSERT IGNORE INTO users (id, name, email, password, role_id, enabled) VALUES (2, 'Jane Doe', 'janed@example.com', '$2a$10$2JNjTwZBwo7fprL2X4sv.OEKqxnVtsVQvuXDkI8xVGix.U3W5B7CO', 1, true);
 INSERT IGNORE INTO users (id, name, email, password, role_id, enabled) VALUES (3, 'Chloe Doe', 'chloed@example.com', '$2a$10$2JNjTwZBwo7fprL2X4sv.OEKqxnVtsVQvuXDkI8xVGix.U3W5B7CO', 1, true);
+INSERT IGNORE INTO users (name, email, password, role_id, enabled) VALUES ('Guest', 'guest@example.com', '$2a$10$nQPynmiyQ1Hhh35yhq23qePgTM/JaaLT/.v4NJ6oGXcX0/orhZpbK', 1, true);
 
 INSERT IGNORE INTO posts (id, user_id, title, content, created_at, updated_at) VALUES (1, 1, 'Day 1', 'Started learning programming today! Let\'s go for it!', '2024-01-01 00:00:00', '2024-01-01 00:00:00');
 INSERT IGNORE INTO posts (id, user_id, title, content, created_at, updated_at) VALUES (2, 1, 'Day 2', 'I need to setup a local development environment first. Installed Visual Studio Code for now.', '2024-01-02 00:00:00', '2024-01-02 00:00:00');

@@ -80,16 +80,15 @@
                                 </div>
                             </div>
                         </div>
+                    </article>
                 </div>
-                </article>
+                <div th:if="${#lists.isEmpty(posts)}">
+                    <p class="text-danger">No posts found.</pclass="text-danger">
+                </div>
             </div>
-            <div th:if="${#lists.isEmpty(posts)}">
-                <p>No posts found.</p>
-            </div>
-    </div>
-    </main>
+        </main>
 
-    <th:block th:replace="~{fragments :: footer}"></th:block>
+        <th:block th:replace="~{fragments :: footer}"></th:block>
     </div>
     <!-- END WRAPPER -->
 
